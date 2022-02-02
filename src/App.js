@@ -1,23 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import "./assets/styles/main.scss";
+import Dashboard from './components/dashboard/Dashboard';
+import { ROUTES } from './routes';
+import Index from './pages/Index';
+import Create from './pages/Create';
+import Update from './pages/Update';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Router>
+        <Switch>
+          <Route
+            path={[
+              ROUTES.index,
+              ROUTES.create,
+              ROUTES.update,
+            ]}
+            exact
+          >
+            <Dashboard>
+              <Switch>
+                <Route path={ROUTES.index} exact component={Index} />
+                <Route path={ROUTES.create} exact component={Create} />
+                <Route path={ROUTES.update} exact component={Update} />
+              </Switch>
+            </Dashboard>
+          </Route>
+          {/*<Route path="/" component={NotFoundPage} />*/}
+        </Switch>
+      </Router>
     </div>
   );
 }

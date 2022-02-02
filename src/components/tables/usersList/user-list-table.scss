@@ -1,0 +1,31 @@
+@import "../../../assets/styles/colors.scss";
+@import "../../../assets/styles/break-points.scss";
+
+.users-list-table{
+    padding: 10px;
+    overflow-x: auto;
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        border: 1px solid $proexeGray;
+        width: 100%;
+        thead{
+            background-color: $proexeGray;
+        }
+        tr{
+            height: 60px;
+            border-bottom: 1px solid $proexeGray;
+        }
+        td, th {
+            text-align: center;
+            padding: 8px;
+        }
+    }
+}
+
+
+@media screen and (min-width: $mobile) {
+    .users-list-table{
+        padding: 20px;
+    }
+}

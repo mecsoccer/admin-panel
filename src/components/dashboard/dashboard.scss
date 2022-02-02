@@ -1,0 +1,50 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/break-points";
+
+.dashboard-component{
+    nav{
+        height: 50px;
+        background-color: $DarkBackgroundColor;
+        display: flex;
+        align-items: center;
+        padding: 0 15px;
+        .dsbd-comp-three-dots{
+            display: flex;
+            justify-content: space-between;
+            width: 50px;
+            div{
+                width: 10px;
+                height: 10px;
+                background-color: $proexeGray;
+                border-radius: 50%;
+            }
+        }
+        h1{
+            color: $proexeGray;
+            width: calc(100% - 100px);
+            display: flex;
+            justify-content: center;
+        }
+    }
+    main{
+        padding: 20px;
+        height: 100%;
+    }
+}
+
+@media screen and (min-width: $mobile) {
+    .dashboard-component{
+        nav{
+            padding: 0 15px;
+            .dsbd-comp-three-dots{
+                div{
+                }
+            }
+            h1{
+            }
+        }
+        main{
+            padding: 30px;
+        }
+    }
+}

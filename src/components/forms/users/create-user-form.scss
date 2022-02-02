@@ -1,0 +1,72 @@
+@import "../../../assets/styles/colors.scss";
+@import "../../../assets/styles/break-points.scss";
+
+.create-user-form{
+    padding: 20px;
+    
+    form{
+        width: 100%;
+        .cuf-ff-flex-end{
+            display: flex;
+            justify-content: flex-end;
+            .cuf-form-fields{
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+        .cuf-form-fields{
+            margin-bottom: 25px;
+            display: flex;
+            label{
+                flex: 3;
+            }
+            .input-text-field{
+                flex: 7;
+            }
+            .MuiInputBase-input{
+                height: 0;
+            }
+
+        }
+        div:last-child{
+            margin-bottom: 0;
+        }
+    }
+}
+
+@media screen and (min-width: $mobile) {
+    .create-user-form{
+        padding: 40px;
+        form{
+            max-width: 80%;
+            margin: auto;
+            div{
+                display: flex;
+            }
+            .cuf-ff-flex-end{
+                display: flex;
+                justify-content: flex-end;
+                .cuf-form-fields{
+                    width: 240px;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: $tablet) {
+    .create-user-form{
+        form{
+            max-width: 650px;
+            margin: auto;
+            div{
+                label{
+                    flex: 2;
+                }
+                input{
+                    flex: 9;
+                }
+            }
+        }
+    }
+}

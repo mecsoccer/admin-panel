@@ -1,17 +1,22 @@
+import 'react-app-polyfill/ie11';
+import 'react-app-polyfill/stable';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import { Provider } from 'react-redux';
+import reduxThunk from 'redux-thunk';
+import { createStore, applyMiddleware, compose } from 'redux';
+import reducers from './store/reducers';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import Alert from './components/popups/SnackBar';
+import ConfirmAction from './components/popups/ConfirmActionDialog';
 
-ReactDOM.render(
-  <React.StrictMode>
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducers, composeEnhancers(applyMiddleware(reduxThunk)));
+
+ReactDOM.render((
+  <Provider store={store}>
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+    <Alert />
+    <ConfirmAction />
+  </Provider>
+), document.querySelector('#root'));

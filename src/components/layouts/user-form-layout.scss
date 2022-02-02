@@ -1,0 +1,25 @@
+@import "../../assets/styles/colors.scss";
+@import "../../assets/styles/break-points.scss";
+
+.user-form-layout{
+    width: 100%;
+    height: auto;
+    box-shadow: 0px 0px 3px 0px $proexeGray;
+    border-radius: 4px;
+    .ufl-top-div{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 0.5px solid $proexeGray;
+        padding: 0 10px;
+        height: 70px;
+    }
+}
+
+@media screen and (min-width: $mobile) {
+    .user-form-layout{
+        .ufl-top-div{
+            padding: 0 20px;
+        }
+    }
+}
