@@ -1,3 +1,5 @@
+import { DISPLAY_ALERT, DISPLAY_CONFIRM_ACTION_DIALOG } from "../actions/types";
+
 const initialAlertState = {
   open: false,
   type: "success",
@@ -13,12 +15,12 @@ const initialState = {
 
 const popupsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "DISPLAY_ALERT":
+    case DISPLAY_ALERT:
       return {
         ...state,
         alertState: { ...action.payload },
       };
-    case "DISPLAY_CONFIRM_ACTION_DIALOG":
+    case DISPLAY_CONFIRM_ACTION_DIALOG:
       return {
         ...state,
         confirmActionState: { ...action.payload },

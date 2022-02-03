@@ -1,20 +1,96 @@
-export const saveSignup1Validation = validation => async dispatch => {
-  dispatch({ type: 'SIGNUP1_VALIDATION', payload: validation });
-}
+import { createUserPath, deleteUserPath, fetchUsersPath, getSingleUserPath, updateUserPath } from "../../services/users/paths";
+import { usersService } from "../../services/users/users";
+import { displaySuccessSnackBar } from "./snackBarActions";
+import {
+  ENABLE_SUBMIT,
+  SAVE_USERS_TO_STORE,
+  UPDATE_USER_INPUT_VALIDATION,
+  CREATE_NEW_USER,
+  SAVE_SINGLE_USER_TO_STORE,
+  DELETE_USER
+} from "./types";
 
-export const setFadeSubmitBtn = status => async dispatch => {
-  dispatch({ type: 'FADE_SUBMIT_BTN', payload: status });
-}
+export const updateUserInputValidation = validationObject => async dispatch => {
+  dispatch({ type: UPDATE_USER_INPUT_VALIDATION, payload: validationObject });
+};
 
-export const saveSignup1Detail = userInput => async dispatch => {
-  dispatch({ type: 'SIGNUP1', payload: userInput });
-}
+export const enableSubmit = status => async dispatch => {
+  dispatch({ type: ENABLE_SUBMIT, payload: status });
+};
 
-export const submitSignup1 = userDetails => async dispatch => {
+export const fetchUsersList = () => async dispatch => {
   try {
-    dispatch({ type: 'SIGNUP1', payload: userDetails });
+    const usersList = await usersService().get(fetchUsersPath);
+    dispatch({ type: SAVE_USERS_TO_STORE, payload: usersList.data });
+  } catch (error) {
+    
   }
-  catch (error) {
-    if (error.message === 'Network Error') return alert('No or poor network connection.');
+};
+
+export const fetchSingleUser = (id) => async (dispatch, getState) => {
+  try {
+    const user = await usersService().get(getSingleUserPath.replace(':id', id));
+    dispatch({ type: SAVE_SINGLE_USER_TO_STORE, payload: user.data });
+  } catch (error) {
+    const { users } = getState().userInfo;
+    const user = users.find((item) => item.id === id);
+    dispatch({ type: SAVE_SINGLE_USER_TO_STORE, payload: user });
   }
-}
+};
+
+export const createNewUser = (user, cb=() => {}) => async (dispatch, getState) => {
+  try {
+    const { users } = getState().userInfo;
+    const lastId = users[users.length - 1]?.id || 1;
+    user.id = lastId + 1;
+    const newUser = await usersService().post(createUserPath, user);
+    dispatch({ type: CREATE_NEW_USER, payload: [...users, newUser.data] });
+    cb();
+  } catch (error) {
+    
+  }
+};
+
+export const updateUserDetails = (id, user, cb=() => {}) => async (dispatch, getState) => {
+  try {
+    const update = await usersService().put(updateUserPath.replace(':id', id), user);
+    const { users } = getState().userInfo;
+    const index = users.findIndex((item) => item.id === Number(id));
+    const temp = [...users];
+    temp[index] = update.data;
+    dispatch({ type: SAVE_USERS_TO_STORE, payload: temp });
+    dispatch(displaySuccessSnackBar(null, 'User updated!!!'));
+    cb();
+  } catch (error) {
+    const { users } = getState().userInfo;
+    const index = users.findIndex((item) => item.id === Number(id));
+    const temp = [...users];
+    temp[index] = user;
+    dispatch({ type: SAVE_USERS_TO_STORE, payload: temp });
+    dispatch(displaySuccessSnackBar(null, 'User updated!!!'));
+    cb();
+  }
+};
+
+export const deletUserDetail = (id, cb=() => {}) => async (dispatch, getState) => {
+  try {
+    await usersService().delete(deleteUserPath.replace(':id', id));
+    const { users } = getState().userInfo;
+    const index = users.findIndex((item) => item.id === Number(id));
+    const temp = [...users];
+    console.log('index',index)
+    temp.splice(index, 1);
+    dispatch({ type: DELETE_USER, payload: temp });
+    dispatch(displaySuccessSnackBar(null, 'User deleted!!!'));
+    cb();
+  } catch (error) {
+    const { users } = getState().userInfo;
+    const index = users.findIndex((item) => item.id === Number(id));
+    console.log('index',index)
+    const temp = [...users];
+    temp.splice(index, 1);
+    dispatch({ type: DELETE_USER, payload: temp });
+    dispatch(displaySuccessSnackBar(null, 'User deleted!!!'));
+    cb();
+  }
+};

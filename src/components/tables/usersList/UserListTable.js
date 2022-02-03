@@ -6,8 +6,9 @@ import CustomButton from "../../buttons/Buttons";
 import { ROUTES } from "../../../routes";
 import scssVariables from "../../../assets/styles/colors.scss";
 import "./user-list-table.scss";
+import { deletUserDetail } from "../../../store/actions/userActions";
 
-const UserListTable = () => {
+const UserListTable = ({ users }) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -22,7 +23,7 @@ const UserListTable = () => {
 
   const deleteUser = (id) => {
     dispatch(closeConfirmDialog());
-    alert(id);
+    dispatch(deletUserDetail(id));
   };
 
   return (
@@ -40,33 +41,35 @@ const UserListTable = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>John Doe</td>
-            <td>Doe</td>
-            <td>john@doe.com</td>
-            <td>Umuahia</td>
-            <td>
-              <CustomButton
-                width={130}
-                variant="contained"
-                foregroundColor={scssVariables.whiteColor}
-                backgroundColor={scssVariables.proexeYellow}
-                hoverBgColor={scssVariables.proexeYellowHover}
-                onClick={() => updateUser(1)}
-              >edit</CustomButton>
-            </td>
-            <td>
-              <CustomButton
-                width={130}
-                variant="contained"
-                foregroundColor={scssVariables.whiteColor}
-                backgroundColor={scssVariables.proexeRed}
-                hoverBgColor={scssVariables.proexeRedHover}
-                onClick={() => initiateDelete(1)}
-              >delete</CustomButton>
-            </td>
-          </tr>
+          {users.map((user) => (
+            <tr>
+              <td>{user.id}</td>
+              <td>{user.name}</td>
+              <td>{user.username}</td>
+              <td>{user.email}</td>
+              <td>{user.city}</td>
+              <td>
+                <CustomButton
+                  width={130}
+                  variant="contained"
+                  foregroundColor={scssVariables.whiteColor}
+                  backgroundColor={scssVariables.proexeYellow}
+                  hoverBgColor={scssVariables.proexeYellowHover}
+                  onClick={() => updateUser(user.id)}
+                >edit</CustomButton>
+              </td>
+              <td>
+                <CustomButton
+                  width={130}
+                  variant="contained"
+                  foregroundColor={scssVariables.whiteColor}
+                  backgroundColor={scssVariables.proexeRed}
+                  hoverBgColor={scssVariables.proexeRedHover}
+                  onClick={() => initiateDelete(user.id)}
+                >delete</CustomButton>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

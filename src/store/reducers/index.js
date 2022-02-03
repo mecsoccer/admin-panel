@@ -1,9 +1,8 @@
 import { combineReducers } from 'redux';
-import signupBasicInfoReducer from './signupBasicInfoReducer';
+import usersReducer from './usersReducer';
 import popupsReducer from './popupsReducer';
 
-
 export default combineReducers({
-  signupBasicInfo: signupBasicInfoReducer,
+  userInfo: usersReducer,
   popups: popupsReducer,
 });

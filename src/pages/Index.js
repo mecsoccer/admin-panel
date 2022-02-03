@@ -1,5 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 import CustomButton from "../components/buttons/Buttons";
 import UserFormLayout from "../components/layouts/UserFormLayout.js";
 import UserListTable from "../components/tables/usersList/UserListTable";
@@ -8,6 +9,7 @@ import scssVariables from "../assets/styles/colors.scss";
 
 const Index = () => {
   const history = useHistory();
+  const { users } = useSelector(state => state.userInfo);
 
   const handleCreate = () => {
     history.push(ROUTES.create);
@@ -30,7 +32,7 @@ const Index = () => {
         title="User list"
         actionButton={addUserButton}
       >
-        <UserListTable />
+        <UserListTable users={users} />
       </UserFormLayout>
     </div>
   )

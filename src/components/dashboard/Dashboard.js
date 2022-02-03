@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { fetchUsersList } from "../../store/actions/userActions";
 import "./dashboard.scss";
 
 const Dashboard = (props) => {
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    dispatch(fetchUsersList());
+  }, [dispatch]);
+
   return (
     <div className="dashboard-component">
       <nav>
