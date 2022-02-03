@@ -5,7 +5,11 @@ import {
   UPDATE_USER_INPUT_VALIDATION,
   CREATE_NEW_USER,
   SAVE_SINGLE_USER_TO_STORE,
-  DELETE_USER
+  DELETE_USER,
+  SIGNAL_CREATING,
+  SIGNAL_DELETING,
+  SIGNAL_UPDATING,
+  SIGNAL_FETCHING
 } from "../actions/types";
 
 const initialFormValues = {
@@ -20,10 +24,22 @@ const initialState = {
   validation: initialFormValues,
   user: null,
   users: [],
+  creating: false,
+  fetching: false,
+  updating: false,
+  deleting: false,
 };
 
 function usersReducer(state = {...initialState}, action) {
   switch(action.type) {
+    case SIGNAL_CREATING:
+      return { ...state, creating: action.payload };
+    case SIGNAL_DELETING:
+      return { ...state, deleting: action.payload };
+    case SIGNAL_UPDATING:
+      return { ...state, updating: action.payload };
+    case SIGNAL_FETCHING:
+      return { ...state, fetching: action.payload };
     case UPDATE_USER_INPUT_VALIDATION:
       return { ...state, validation: action.payload };
     case UPDATE_USER_DETAILS:

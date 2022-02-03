@@ -7,7 +7,9 @@ import {
   UPDATE_USER_INPUT_VALIDATION,
   CREATE_NEW_USER,
   SAVE_SINGLE_USER_TO_STORE,
-  DELETE_USER
+  DELETE_USER,
+  SIGNAL_UPDATING,
+  SIGNAL_CREATING
 } from "./types";
 
 export const updateUserInputValidation = validationObject => async dispatch => {
@@ -40,18 +42,23 @@ export const fetchSingleUser = (id) => async (dispatch, getState) => {
 
 export const createNewUser = (user, cb=() => {}) => async (dispatch, getState) => {
   try {
+    dispatch({ type: SIGNAL_CREATING, payload: true })
     const { users } = getState().userInfo;
     const lastId = users[users.length - 1]?.id || 1;
     user.id = lastId + 1;
     const newUser = await usersService().post(createUserPath, user);
-    dispatch({ type: CREATE_NEW_USER, payload: [...users, newUser.data] });
+    dispatch({
+      type: CREATE_NEW_USER, payload: [...users, newUser.data] });
+    
+    dispatch({ type: SIGNAL_CREATING, payload: false })
     cb();
   } catch (error) {
-    
+    dispatch({ type: SIGNAL_CREATING, payload: false })
   }
 };
 
 export const updateUserDetails = (id, user, cb=() => {}) => async (dispatch, getState) => {
+  dispatch({ type: SIGNAL_UPDATING, payload: true })
   try {
     const update = await usersService().put(updateUserPath.replace(':id', id), user);
     const { users } = getState().userInfo;
@@ -60,12 +67,15 @@ export const updateUserDetails = (id, user, cb=() => {}) => async (dispatch, get
     temp[index] = update.data;
     dispatch({ type: SAVE_USERS_TO_STORE, payload: temp });
     dispatch(displaySuccessSnackBar(null, 'User updated!!!'));
+    
+    dispatch({ type: SIGNAL_UPDATING, payload: false })
     cb();
   } catch (error) {
     const { users } = getState().userInfo;
     const index = users.findIndex((item) => item.id === Number(id));
     const temp = [...users];
     temp[index] = user;
+    dispatch({ type: SIGNAL_UPDATING, payload: false })
     dispatch({ type: SAVE_USERS_TO_STORE, payload: temp });
     dispatch(displaySuccessSnackBar(null, 'User updated!!!'));
     cb();

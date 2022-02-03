@@ -1,8 +1,9 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import { Button, CircularProgress } from '@material-ui/core';
 
 const CustomButton = (props) => {
+  console.log(props)
   const ColorButton = withStyles((theme) => ({
     root: {
       color: props.foregroundColor,
@@ -18,7 +19,7 @@ const CustomButton = (props) => {
   
   return (
     <ColorButton variant="outlined" color="primary" {...props}>
-      {props.children}
+      {props.loading ? <CircularProgress size={24} /> : props.children}
     </ColorButton>
   )
 };

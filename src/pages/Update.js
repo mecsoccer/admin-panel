@@ -30,6 +30,7 @@ const Update = (props) => {
   const submit = () => {
     if (!submitEnabled) return;
     const payload = {
+      id: user.id,
       name: name.value,
       email: email.value,
       username: username.value,

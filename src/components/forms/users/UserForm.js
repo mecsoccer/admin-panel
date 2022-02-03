@@ -12,7 +12,7 @@ import "./user-form.scss";
 const UserForm = ({ submit, user, update }) => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { submitEnabled, validation } = useSelector(state => state.userInfo);
+  const { submitEnabled, validation, creating, updating } = useSelector(state => state.userInfo);
   const { email, name, username, city } = validation;
   
   useEffect(() => {
@@ -97,6 +97,7 @@ const UserForm = ({ submit, user, update }) => {
               width={110}
               color="secondary"
               onClick={onCancelClick}
+              disabled={creating || updating}
             >Cancel</CustomButton>
             <CustomButton
               color="primary"
@@ -105,7 +106,8 @@ const UserForm = ({ submit, user, update }) => {
               foregroundColor={scssVariables.whiteColor}
               backgroundColor={scssVariables.proexeGreen}
               hoverBgColor={scssVariables.proexeGreenHover}
-              disabled={!submitEnabled}
+              disabled={!submitEnabled || (creating || updating)}
+              loading={creating || updating}
               onClick={submit}
             >Submit</CustomButton>
           </div>
