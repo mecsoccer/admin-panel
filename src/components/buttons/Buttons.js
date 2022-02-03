@@ -3,7 +3,6 @@ import { withStyles } from '@material-ui/core/styles';
 import { Button, CircularProgress } from '@material-ui/core';
 
 const CustomButton = (props) => {
-  console.log(props)
   const ColorButton = withStyles((theme) => ({
     root: {
       color: props.foregroundColor,

@@ -19,6 +19,11 @@
         td, th {
             text-align: center;
             padding: 8px;
+            text-transform: capitalize;
+        }
+        th div{
+            display: flex;
+            align-items: center;
         }
     }
 }

@@ -1,16 +1,18 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { displayConfirmDialog, closeConfirmDialog } from "../../../store/actions/confirmDialogActions";
 import CustomButton from "../../buttons/Buttons";
 import { ROUTES } from "../../../routes";
 import scssVariables from "../../../assets/styles/colors.scss";
 import "./user-list-table.scss";
-import { deletUserDetail } from "../../../store/actions/userActions";
+import { deletUserDetail, sortUsers } from "../../../store/actions/userActions";
+import Menu from "../../sorting/Menu";
 
-const UserListTable = ({ users }) => {
+const UserListTable = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const { users, sortedUsers } = useSelector(state => state.userInfo);
 
   const initiateDelete = (id) => {
     const message = 'Are you sure you want to delete this user?';
@@ -26,6 +28,39 @@ const UserListTable = ({ users }) => {
     dispatch(deletUserDetail(id));
   };
 
+  const handleSort = (option) => {
+    const temp = [...users];
+    if (option === 'Sort Ascending') {
+      dispatch(sortUsers(temp.sort((a, b) => {
+        var nameA = a.username.toUpperCase();
+        var nameB = b.username.toUpperCase();
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        
+        return 0;
+      })));
+    };
+
+    if (option === 'Sort Descending') {
+      dispatch(sortUsers(temp.sort((a, b) => {
+        var nameA = a.username.toUpperCase();
+        var nameB = b.username.toUpperCase();
+        if (nameA > nameB) {
+          return -1;
+        }
+        if (nameA < nameB) {
+          return 1;
+        }
+        
+        return 0;
+      })));
+    };
+  }
+
   return (
     <div className="users-list-table">
       <table>
@@ -33,7 +68,7 @@ const UserListTable = ({ users }) => {
           <tr>
             <th>Id</th>
             <th>Name</th>
-            <th>Username</th>
+            <th><div><Menu handleSort={handleSort} /> Username</div></th>
             <th>Email</th>
             <th>City</th>
             <th>Edit</th>
@@ -41,7 +76,7 @@ const UserListTable = ({ users }) => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
+          {(sortedUsers.length ? sortedUsers : users).map((user) => (
             <tr>
               <td>{user.id}</td>
               <td>{user.name}</td>

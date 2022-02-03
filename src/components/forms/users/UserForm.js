@@ -43,8 +43,8 @@ const UserForm = ({ submit, user, update }) => {
               className="input-text-field"
               value={name.value}
               onChange={(e) => {
-                const value = e.target.value.replace(/\d/g,'');
-                const regex = /^([a-z]+-?[a-z]+\s[a-z]+-?[a-z]+){1,255}$/gi;
+                const value = e.target.value.replace(/\d/gi,'');
+                const regex = /^([a-z]+-?[a-z]+\.?\s[a-z]+-?[a-z]+){1,255}$/gi;
                 handleFormInput('name', value, regex, validation, handleInputChange);
               }}
               error={!name.validation}
@@ -72,8 +72,8 @@ const UserForm = ({ submit, user, update }) => {
               className="input-text-field"
               value={username.value}
               onChange={(e) => {
-                const value = e.target.value.replace(/[^a-z]/g, '');
-                handleFormInput('username', value, /.{2,50}/g, validation, handleInputChange);
+                const value = e.target.value.replace(/[^a-z\d._]/gi, '');
+                handleFormInput('username', value, /.{2,50}/gi, validation, handleInputChange);
               }}
               error={!username.validation && username.value}
             />
@@ -85,7 +85,7 @@ const UserForm = ({ submit, user, update }) => {
               className="input-text-field"
               value={city.value}
               onChange={(e) => {
-                handleFormInput('city', e.target.value, /.+/g, validation, handleInputChange);
+                handleFormInput('city', e.target.value, /.+/gi, validation, handleInputChange);
               }}
               error={!city.validation && city.value}
             />

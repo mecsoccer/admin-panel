@@ -9,8 +9,13 @@ import {
   SAVE_SINGLE_USER_TO_STORE,
   DELETE_USER,
   SIGNAL_UPDATING,
-  SIGNAL_CREATING
+  SIGNAL_CREATING,
+  SORT_USERS
 } from "./types";
+
+export const sortUsers = details => async dispatch => {
+  dispatch({ type: SORT_USERS, payload: details });
+};
 
 export const updateUserInputValidation = validationObject => async dispatch => {
   dispatch({ type: UPDATE_USER_INPUT_VALIDATION, payload: validationObject });
@@ -47,10 +52,9 @@ export const createNewUser = (user, cb=() => {}) => async (dispatch, getState) =
     const lastId = users[users.length - 1]?.id || 1;
     user.id = lastId + 1;
     const newUser = await usersService().post(createUserPath, user);
-    dispatch({
-      type: CREATE_NEW_USER, payload: [...users, newUser.data] });
-    
-    dispatch({ type: SIGNAL_CREATING, payload: false })
+    dispatch({ type: CREATE_NEW_USER, payload: [...users, newUser.data] });
+    dispatch({ type: SIGNAL_CREATING, payload: false });
+    dispatch(displaySuccessSnackBar(null, 'User created!!!'));
     cb();
   } catch (error) {
     dispatch({ type: SIGNAL_CREATING, payload: false })
@@ -88,7 +92,6 @@ export const deletUserDetail = (id, cb=() => {}) => async (dispatch, getState) =
     const { users } = getState().userInfo;
     const index = users.findIndex((item) => item.id === Number(id));
     const temp = [...users];
-    console.log('index',index)
     temp.splice(index, 1);
     dispatch({ type: DELETE_USER, payload: temp });
     dispatch(displaySuccessSnackBar(null, 'User deleted!!!'));
@@ -96,7 +99,6 @@ export const deletUserDetail = (id, cb=() => {}) => async (dispatch, getState) =
   } catch (error) {
     const { users } = getState().userInfo;
     const index = users.findIndex((item) => item.id === Number(id));
-    console.log('index',index)
     const temp = [...users];
     temp.splice(index, 1);
     dispatch({ type: DELETE_USER, payload: temp });

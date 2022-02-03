@@ -22,30 +22,26 @@ function CustomizedSnackbars(props) {
   const classes = useStyles();
   const { open, type, duration, message } = props.alert;
 
-  const setOpen = (status) => {
-    props.closeSuccessSnackBar(null, '');
-  };
-
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
 
-    setOpen(false);
+    props.closeSuccessSnackBar();
   };
 
   return (
     <div className={classes.root}>
       <Snackbar open={open} anchorOrigin={{horizontal:'center',vertical:'top'}} autoHideDuration={duration} onClose={handleClose}>
         <Alert onClose={handleClose} severity={type}>
-            {message}
+          {message}
         </Alert>
       </Snackbar>
     </div>
   );
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
   return {
     alert: state.popups.alertState,
   };
